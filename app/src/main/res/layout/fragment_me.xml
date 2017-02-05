@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:background="?attr/main_bg"
+              android:orientation="vertical"
+              app:isColorUi="true"
+    >
+
+    <!--<me.weyye.todaynews.ui.view.PullZoomLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--app:pzMain="@layout/mine_fragment_content"-->
+    <!--app:pzHeader="@layout/mine_fragment_header"></me.weyye.todaynews.ui.view.PullZoomLayout>-->
+
+    <include layout="@layout/mine_fragment_header"/>
+
+    <include layout="@layout/mine_fragment_content"/>
+    <!--<me.weyye.todaynews.ui.view.MyScrollView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"></me.weyye.todaynews.ui.view.MyScrollView>-->
+</LinearLayout>

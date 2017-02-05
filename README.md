@@ -3,26 +3,26 @@
 
 # 项目截图
 
-![](/screenshot/01.png2)
+![](/screenshot/01.png)
 
-![](/screenshot/02.png2)
+![](/screenshot/02.png)
 
-![](/screenshot/03.png2)
+![](/screenshot/03.png)
 
-![](/screenshot/04.png2)
+![](/screenshot/04.png)
 
-![](/screenshot/05.png2)
+![](/screenshot/05.png)
 
-![](/screenshot/06.png2)
+![](/screenshot/06.png)
 
 # 第三方库
-* [BaseRecyclerViewAdapterHelper]("https://github.com/CymChad/BaseRecyclerViewAdapterHelper")
-* [ImageLoader]("https://github.com/nostra13/Android-Universal-Image-Loader")
+* [BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper)
+* [ImageLoader](https://github.com/nostra13/Android-Universal-Image-Loader)
 * [Retrofit](https://github.com/square/retrofit)
-* [RxJava]("https://github.com/ReactiveX/RxJava")
-* [ButterKnife]("https://github.com/JakeWharton/butterknife")
-* [MultipleTheme]("https://github.com/dersoncheng/MultipleTheme")
-* [Gson]("https://github.com/google/gson")
+* [RxJava](https://github.com/ReactiveX/RxJava)
+* [ButterKnife](https://github.com/JakeWharton/butterknife)
+* [MultipleTheme](https://github.com/dersoncheng/MultipleTheme)
+* [Gson](https://github.com/google/gson)
 
 # 技术要点
 
@@ -57,7 +57,7 @@
 
 ```
 
-果然功夫不负有心人，如果我们实现了这个接口，最终加载布局的时候那么就会调用`onCreateView`在这里面来实现偷梁换柱替换成我们的布局
+果然功夫不负有心人，如果我们实现了这个接口，最终加载布局的时候那么就会调用`onCreateView`在这里面来实现偷梁换柱替换成我们的自定义控件
 
 # TODO
 

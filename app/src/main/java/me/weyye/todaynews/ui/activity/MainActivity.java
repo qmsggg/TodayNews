@@ -86,10 +86,7 @@ public class MainActivity extends BaseActivity {
         for (int i = 0; i < llBottom.getChildCount(); i++) {
             if (i == 0) {
                 //默认选中首页
-                ivIconHome.setSelected(true);
-                tvTextHome.setSelected(true);
-                lastSelectedIcon = ivIconHome;
-                lastSelectedText = tvTextHome;
+                setSelectIcon(ivIconHome,tvTextHome);
             }
             final int position = i;
             llBottom.getChildAt(i).setOnClickListener(new View.OnClickListener() {
@@ -101,14 +98,18 @@ public class MainActivity extends BaseActivity {
                     RelativeLayout rl = (RelativeLayout) v;
                     ImageView icon = (ImageView) rl.getChildAt(0);
                     TextView text = (TextView) rl.getChildAt(1);
-                    icon.setSelected(true);
-                    text.setSelected(true);
                     mController.showFragment(position);
-                    lastSelectedIcon = icon;
-                    lastSelectedText = text;
+                    setSelectIcon(icon,text);
                 }
             });
         }
+    }
+    private void setSelectIcon(ImageView iv,TextView tv)
+    {
+        iv.setSelected(true);
+        tv.setSelected(true);
+        lastSelectedIcon = iv;
+        lastSelectedText = tv;
     }
 
     @Override

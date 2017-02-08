@@ -7,6 +7,7 @@ import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import me.weyye.todaynews.R;
 import me.weyye.todaynews.base.BaseFragment;
 import me.weyye.todaynews.model.Notice;
 import me.weyye.todaynews.theme.colorUi.util.SharedPreferencesMgr;
+import me.weyye.todaynews.ui.view.HeaderZoomLayout;
 import me.weyye.todaynews.utils.ConstanceValue;
 
 /**
@@ -22,6 +24,8 @@ import me.weyye.todaynews.utils.ConstanceValue;
 public class MeFragment extends BaseFragment {
     private LinearLayout ll_night_mode;
     private TextView txt_my_page_message;
+    private ImageView ivBg;
+    private HeaderZoomLayout zommLayout;
 
     @Override
     protected View loadViewLayout(LayoutInflater inflater, ViewGroup container) {
@@ -31,12 +35,15 @@ public class MeFragment extends BaseFragment {
     @Override
     protected void bindViews(View view) {
         ll_night_mode = get(R.id.ll_night_mode);
+//        ivBg = get(R.id.ivBg);
+        zommLayout = get(R.id.zommLayout);
 //        txt_my_page_message = get(R.id.txt_my_page_message);
     }
 
     @Override
     protected void processLogic() {
 //        txt_my_page_message.setText(txt_my_page_message.getClass().getSimpleName());
+//        zommLayout.setHeaderView(ivBg);
     }
 
     @Override

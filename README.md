@@ -15,6 +15,8 @@
 
 ![](/screenshot/06.png)
 
+![](/screenshot/07.png)
+
 # 第三方库
 * [BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper)
 * [ImageLoader](https://github.com/nostra13/Android-Universal-Image-Loader)
@@ -27,11 +29,11 @@
 # 技术要点
 
 * 主要是一些第三方库的使用
-* 多种Item布局展示->[BaseRecyclerViewAdapterHelper]("https://github.com/CymChad/BaseRecyclerViewAdapterHelper")
-* 日夜间模式切换->[MultipleTheme]("https://github.com/dersoncheng/MultipleTheme")
+* 多种Item布局展示->[BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper)
+* 日夜间模式切换->[MultipleTheme](https://github.com/dersoncheng/MultipleTheme)
 * 新闻详情我采用的是RecyclerView添加头的方式添加WebView（当然是Adapter里面添加）,加载页面成功之后获取评论信息，点击评论图标滑动至评论第一条，这里我是调用`recyclerView.smoothScrollToPosition(1);`
  
-使用[MultipleTheme]("https://github.com/dersoncheng/MultipleTheme")的时候唯一的缺陷就是需要在布局里面大量使用到自定义控件，这对于我们的项目而言，布局看着很冗余，也有点恶心。。我有时候就在想，那我可不可以写原生控件，然后在特定的时机来个偷梁换柱换成我们的自定义控件呢？似乎好像是可以的，当我们加载布局的时候最终都会用`LayoutInflater`来加载，所以我打算从这里入手，看源码我发现有一个接口可以利用->`Factory`,这个接口有一个方法
+使用[MultipleTheme](https://github.com/dersoncheng/MultipleTheme)的时候唯一的缺陷就是需要在布局里面大量使用到自定义控件，这对于我们的项目而言，布局看着很冗余，也有点恶心。。我有时候就在想，那我可不可以写原生控件，然后在特定的时机来个偷梁换柱换成我们的自定义控件呢？似乎好像是可以的，当我们加载布局的时候最终都会用`LayoutInflater`来加载，所以我打算从这里入手，看源码我发现有一个接口可以利用->`Factory`,这个接口有一个方法
 
 ``` java 
     public interface Factory {
@@ -62,6 +64,7 @@
 # TODO
 
 * 加入视频播放功能
+* 逻辑代码的整理
 
 # 声明
 
@@ -69,7 +72,7 @@
 
 # License
 
-	Copyright (C) 2016 WeyYe
+	Copyright (C) 2017 WeyYe
 	
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.

@@ -5,10 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.transition.Transition;
-import android.transition.TransitionInflater;
 import android.view.View;
-import android.view.Window;
 import android.widget.ImageView;
 
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -39,10 +36,6 @@ public class ChannelActivity extends BaseActivity implements OnChannelDragListen
     @android.support.annotation.RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void loadViewLayout() {
-        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
-        Transition explode = TransitionInflater.from(this).inflateTransition(android.R.transition.explode);
-        getWindow().setEnterTransition(explode);
-
         setContentView(R.layout.activity_channel);
         ButterKnife.bind(this);
     }

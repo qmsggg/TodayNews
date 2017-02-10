@@ -1,8 +1,6 @@
 package me.weyye.todaynews.ui.fragment;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -96,7 +94,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements IHom
 
     static final int REQUEST_CHANNEL = 111;
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @OnClick({R.id.feed_top_search_hint, R.id.icon_category})
     public void onClick(View v) {
         switch (v.getId()) {
@@ -106,11 +103,5 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements IHom
                 startActivityForResult(intent,REQUEST_CHANNEL);
                 break;
         }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
     }
 }

@@ -1,9 +1,11 @@
 package me.weyye.todaynews.ui.activity;
 
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import me.weyye.todaynews.R;
 import me.weyye.todaynews.model.CommentList;
 import me.weyye.todaynews.presenter.NewsDetailPresenter;
@@ -23,6 +25,11 @@ public class NewsDetailActivity extends BaseNewsActivity<NewsDetailPresenter> im
     protected void loadViewLayout() {
         setContentView(R.layout.activity_news_detail);
         super.loadViewLayout();
+    }
+
+    @OnClick(R.id.back_btn)
+    public void onBackClick(View view) {
+        finish();
     }
 
     @Override

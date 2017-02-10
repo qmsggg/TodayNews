@@ -1,5 +1,9 @@
 package me.weyye.todaynews.ui.activity;
 
+import android.net.Uri;
+
+import com.orhanobut.logger.Logger;
+
 import me.weyye.todaynews.R;
 import me.weyye.todaynews.model.CommentList;
 import me.weyye.todaynews.presenter.VideoDetailPresenter;
@@ -22,7 +26,10 @@ public class VideoDetailActivity extends BaseNewsActivity<VideoDetailPresenter> 
         super.loadViewLayout();
     }
 
-
+    @Override
+    protected void onUriLoad(Uri uri) {
+        Logger.i(uri.toString());
+    }
 
 
     @Override

@@ -19,7 +19,15 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.activity.NewsDetailActivity"/>
-        <activity android:name=".ui.activity.VideoDetailActivity"/>
+        <activity android:name=".ui.activity.VideoDetailActivity" android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <!--<category android:name="android.intent.category.BROWSABLE"/>-->
+                <data android:scheme="snssdk32" android:host="detail"/>
+                <!--<data android:host="d.ss.com" android:scheme="tt"/>-->
+            </intent-filter>
+        </activity>
         <activity android:name=".ui.activity.NestedScrollActivity">
 
 

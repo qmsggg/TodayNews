@@ -84,6 +84,8 @@ public class HeaderZoomLayout extends ScrollView {
                     }
                 }
                 Logger.i("ev.getY():" + ev.getY());
+                if(ev.getY()-mLastY<0)
+                    return super.onTouchEvent(ev);
                 int distance = (int) ((ev.getY() - mLastY) * mScaleRatio);
                 mIsPulling = true;
                 setZoom(distance);

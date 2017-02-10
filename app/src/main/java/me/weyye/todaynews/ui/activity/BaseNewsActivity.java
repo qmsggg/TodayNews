@@ -1,5 +1,6 @@
 package me.weyye.todaynews.ui.activity;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -80,7 +81,7 @@ public abstract class BaseNewsActivity<P extends BaseDetailPresenter> extends Ba
         headerView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         web = (ProgressWebView) headerView.findViewById(R.id.web);
         mAdapter.addHeaderView(headerView);
-        web.setOnLoadFinishedListener(new ProgressWebView.onLoadFinishedListener() {
+        web.setOnHtmlEventListener(new ProgressWebView.OnHtmlEventListener() {
             @Override
             public void onFinished(String html) {
                 Pattern pattern = Pattern.compile("var.+group_id.+=.+\"([0-9]+)\";\\n.+var.+item_id.+=.+\"([0-9]+)\"");
@@ -93,6 +94,11 @@ public abstract class BaseNewsActivity<P extends BaseDetailPresenter> extends Ba
 
 
             }
+
+            @Override
+            public void onUriLoading(Uri uri) {
+                onUriLoad(uri);
+            }
         });
         mAdapter.openLoadMore(10, true);
         View emptyView = View.inflate(this, R.layout.subscribe_list_empty_view, null);
@@ -102,6 +108,8 @@ public abstract class BaseNewsActivity<P extends BaseDetailPresenter> extends Ba
         web.loadUrl(url);
     }
 
+    protected void onUriLoad(Uri uri) {
+    }
 
     @Override
     protected void setListener() {
@@ -126,12 +134,10 @@ public abstract class BaseNewsActivity<P extends BaseDetailPresenter> extends Ba
         }
     }
 
-    @OnClick({R.id.back_btn, R.id.action_commont_layout, R.id.action_favor, R.id.action_repost})
+    @OnClick({R.id.action_commont_layout, R.id.action_favor, R.id.action_repost})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.back_btn:
-                finish();
-                break;
+
             case R.id.action_commont_layout:
 //                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
 //                linearLayoutManager.scrollToPositionWithOffset(1, 0);

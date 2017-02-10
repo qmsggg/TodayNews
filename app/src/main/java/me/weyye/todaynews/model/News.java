@@ -49,6 +49,7 @@ public class News  {
     public boolean is_diversion_page;
     public String media_url;
     public String video_duration_str;
+    public Video video;
     /**
      * url : http://p2.pstatp.com/list/ef5000fa3ce130815bc
      */
@@ -77,6 +78,8 @@ public class News  {
                 ", group_id='" + group_id + '\'' +
                 ", is_diversion_page=" + is_diversion_page +
                 ", media_url='" + media_url + '\'' +
+                ", video_duration_str='" + video_duration_str + '\'' +
+                ", video=" + video +
                 ", image_list=" + image_list +
                 '}';
     }

@@ -17,6 +17,12 @@
 
 ![](/screenshot/07.png)
 
+![](/screenshot/08.jpg)
+
+# Blog
+
+[Android仿今日头条的开源项目](http://www.weyye.me/detail/my-project-today-news/)
+
 # 第三方库
 * [BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper)
 * [ImageLoader](https://github.com/nostra13/Android-Universal-Image-Loader)
@@ -25,6 +31,7 @@
 * [ButterKnife](https://github.com/JakeWharton/butterknife)
 * [MultipleTheme](https://github.com/dersoncheng/MultipleTheme)
 * [Gson](https://github.com/google/gson)
+* [JieCaoVideoPlayer](https://github.com/lipangit/JieCaoVideoPlayer)
 
 # 技术要点
 
@@ -32,8 +39,9 @@
 * 多种Item布局展示->[BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper)
 * 日夜间模式切换->[MultipleTheme](https://github.com/dersoncheng/MultipleTheme)
 * 新闻详情我采用的是RecyclerView添加头的方式添加WebView（当然是Adapter里面添加）,加载页面成功之后获取评论信息，点击评论图标滑动至评论第一条，这里我是调用`recyclerView.smoothScrollToPosition(1);`
+* 视频播放我使用的是[JieCaoVideoPlayer](https://github.com/lipangit/JieCaoVideoPlayer),一群大牛封装的代码，底层实际使用[ijkplayer](https://github.com/Bilibili/ijkplayer),视频源均使用非正常手段获取，视频源地址分析请看我的另一篇博客[手撸一个今日头条视频下载器](http://www.weyye.me/detail/today-news-video/)
  
-使用[MultipleTheme](https://github.com/dersoncheng/MultipleTheme)的时候唯一的缺陷就是需要在布局里面大量使用到自定义控件，这对于我们的项目而言，布局看着很冗余，也有点恶心。。我有时候就在想，那我可不可以写原生控件，然后在特定的时机来个偷梁换柱换成我们的自定义控件呢？似乎好像是可以的，当我们加载布局的时候最终都会用`LayoutInflater`来加载，所以我打算从这里入手，看源码我发现有一个接口可以利用->`Factory`,这个接口有一个方法
+在使用[MultipleTheme](https://github.com/dersoncheng/MultipleTheme)的时候唯一的缺陷就是需要在布局里面大量使用到自定义控件，这对于我们的项目而言，布局看着很冗余，也有点恶心。。我有时候就在想，那我可不可以写原生控件，然后在特定的时机来个偷梁换柱换成我们的自定义控件呢？似乎好像是可以的，当我们加载布局的时候最终都会用`LayoutInflater`来加载，所以我打算从这里入手，看源码我发现有一个接口可以利用->`Factory`,这个接口有一个方法
 
 ``` java 
     public interface Factory {

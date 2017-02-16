@@ -40,7 +40,7 @@ public abstract class VideoPathDecoder {
 
     public void decodePath(final String srcUrl) {
 
-        AppClient.getApiService(true).getVideoHtml(srcUrl)
+        AppClient.getApiService().getVideoHtml(srcUrl)
                 .flatMap(new Func1<String, Observable<ResultResponse<VideoModel>>>() {
                     @Override
                     public Observable<ResultResponse<VideoModel>> call(String response) {
@@ -57,7 +57,7 @@ public abstract class VideoPathDecoder {
                             String crcString = crc32.getValue() + "";
                             String url = ApiService.HOST_VIDEO + s + "&s=" + crcString;
                             Logger.i(url);
-                            return AppClient.getApiService(true).getVideoData(url);
+                            return AppClient.getApiService().getVideoData(url);
                         }
                         return null;
                     }

@@ -27,10 +27,10 @@ public class AppClient {
      * @param isOnlyString 是否只解析字符串格式数据
      * @return
      */
-    public static Retrofit retrofit(boolean isOnlyString) {
+    public static Retrofit retrofit() {
 
 
-        if (mRetrofit == null ) {
+        if (mRetrofit == null) {
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
             if (BuildConfig.DEBUG) {
                 // Log信息拦截器
@@ -56,8 +56,7 @@ public class AppClient {
             OkHttpClient okHttpClient = builder.build();
             mRetrofit = new Retrofit.Builder()
                     .baseUrl(ApiService.API_SERVER_URL)
-//                    .addConverterFactory(isOnlyString ? ScalarsConverterFactory.create() : GsonConverterFactory.create(new GsonBuilder().create()))
-                    .addConverterFactory( ScalarsConverterFactory.create())
+                    .addConverterFactory(ScalarsConverterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .client(okHttpClient)
@@ -65,39 +64,8 @@ public class AppClient {
         }
         return mRetrofit;
     }
-
-    private static boolean isNeedInit(boolean isOnlyString) {
-        if(isOnlyString)
-        {
-            if(mRetrofit.converterFactories().get(0) instanceof ScalarsConverterFactory)
-            {
-                return false;
-            }else {
-                return true;
-            }
-
-        }else {
-            if(mRetrofit.converterFactories().get(0) instanceof GsonConverterFactory)
-            {
-                return false;
-            }else {
-                return true;
-            }
-        }
-
-//        return isOnlyString?mRetrofit.converterFactories().get(0) instanceof ScalarsConverterFactory:mRetrofit.converterFactories().get(0) instanceof GsonConverterFactory;
-    }
-
     public static ApiService getApiService() {
-        return getApiService(false);
+        return retrofit().create(ApiService.class);
     }
-
-    public static ApiService getApiService(boolean isOnlyString) {
-        return retrofit(isOnlyString).create(ApiService.class);
-    }
-
-//    public static String md5(String md5) {
-//        return CommonUtil.md5(md5);
-//    }
 
 }

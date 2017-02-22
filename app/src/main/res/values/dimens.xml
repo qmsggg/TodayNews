@@ -18,4 +18,8 @@
     <dimen name="wd_feed_line_margin_top">12.0dip</dimen>
     <dimen name="wd_feed_card_margin_horizontal">15.0dip</dimen>
     <dimen name="top_category_height">20.0dip</dimen>
+    <dimen name="splash_banner_margin_bottom">25.0dip</dimen>
+    <dimen name="splash_ad_ignore">36.0dip</dimen>
+    <dimen name="splash_ad_ignore_count_top">3.0dip</dimen>
+    <dimen name="splash_ad_ignore_text_top">18.0dip</dimen>
 </resources>

@@ -1,7 +1,6 @@
 package me.weyye.todaynews.utils;
 
 import android.graphics.Bitmap;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -33,16 +32,15 @@ public class ImageLoaderUtils {
     }
 
     public static void displayBigImage(String uri, ImageView view) {
-        getImageLoader().displayImage(uri, view, ImageOptHelper.getBigImgOptions());
+        displayBigImage(uri, view, null);
     }
 
-    public static void loadImage(String path, final LoadingListener listener) {
-        getImageLoader().loadImage(path, new SimpleImageLoadingListener() {
-            @Override
-            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                listener.onLoadingComplete(loadedImage);
-            }
-        });
+    public static void displayBigImage(String uri, ImageView view, SimpleImageLoadingListener listener) {
+        getImageLoader().displayImage(uri, view, ImageOptHelper.getBigImgOptions(), listener);
+    }
+
+    public static void loadImage(String path, final SimpleImageLoadingListener listener) {
+        getImageLoader().loadImage(path, listener);
     }
 
     public interface LoadingListener {

@@ -5,6 +5,10 @@
 
 [Android仿今日头条的开源项目](http://www.weyye.me/detail/my-project-today-news/)
 
+#Apk
+
+[点击下载](http://fir.im/np8w)
+
 # 项目截图
 
 ![](/screenshot/01.png)

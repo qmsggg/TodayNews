@@ -1,5 +1,9 @@
 # TodayNews
-一个仿今日头条的开源项目
+一个仿今日头条的开源项目，是基于MVP+[RxJava](https://github.com/ReactiveX/RxJava)+[Retrofit](https://github.com/square/retrofit)
+
+# Blog
+
+[Android仿今日头条的开源项目](http://www.weyye.me/detail/my-project-today-news/)
 
 # 项目截图
 
@@ -19,9 +23,7 @@
 
 ![](/screenshot/08.jpg)
 
-# Blog
 
-[Android仿今日头条的开源项目](http://www.weyye.me/detail/my-project-today-news/)
 
 # 第三方库
 * [BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper)

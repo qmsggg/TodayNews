@@ -45,9 +45,6 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void loadViewLayout() {
-//        ThemeUtils.setTheme(this, R.style.Theme_Night);
-//        getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
     }
@@ -63,7 +60,6 @@ public class MainActivity extends BaseActivity {
         mController = FragmentController.getInstance(this, R.id.fl_content, true);
         mController.showFragment(0);
     }
-
     private void initBottomNav() {
 //        bottomNav.builder().setItems(
 //                new NavigationItem( this, new int[]{R.drawable.b_newhome_tabbar, R.drawable.b_newhome_tabbar_press}, "首页", new int[]{getColorRes(R.color.font_main), getColorRes(R.color.font_main_p)}),
@@ -86,7 +82,7 @@ public class MainActivity extends BaseActivity {
         for (int i = 0; i < llBottom.getChildCount(); i++) {
             if (i == 0) {
                 //默认选中首页
-                setSelectIcon(ivIconHome,tvTextHome);
+                setSelectIcon(ivIconHome, tvTextHome);
             }
             final int position = i;
             llBottom.getChildAt(i).setOnClickListener(new View.OnClickListener() {
@@ -99,13 +95,13 @@ public class MainActivity extends BaseActivity {
                     ImageView icon = (ImageView) rl.getChildAt(0);
                     TextView text = (TextView) rl.getChildAt(1);
                     mController.showFragment(position);
-                    setSelectIcon(icon,text);
+                    setSelectIcon(icon, text);
                 }
             });
         }
     }
-    private void setSelectIcon(ImageView iv,TextView tv)
-    {
+
+    private void setSelectIcon(ImageView iv, TextView tv) {
         iv.setSelected(true);
         tv.setSelected(true);
         lastSelectedIcon = iv;

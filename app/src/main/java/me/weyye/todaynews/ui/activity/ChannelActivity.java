@@ -1,6 +1,5 @@
 package me.weyye.todaynews.ui.activity;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,7 +32,6 @@ public class ChannelActivity extends BaseActivity implements OnChannelDragListen
     private final String[] titles = new String[]{"推荐", "视频", "热点", "社会", "娱乐", "科技", "汽车", "体育", "财经", "军事", "国际", "时尚", "游戏", "旅游", "历史", "探索", "美食", "育儿", "养生", "故事", "美文"};
     private ItemTouchHelper mHelper;
 
-    @android.support.annotation.RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void loadViewLayout() {
         setContentView(R.layout.activity_channel);

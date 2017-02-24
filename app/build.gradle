@@ -10,6 +10,8 @@ android {
         targetSdkVersion rootProject.ext.targetSdk
         versionCode rootProject.ext.version_code
         versionName rootProject.ext.version_name
+        vectorDrawables.useSupportLibrary = true
+//        generatedDensities = []
     }
     buildTypes {
         release {
@@ -17,6 +19,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+//    aaptOptions {
+//        additionalParameters "--no-version-vectors"
+//    }
 }
 
 dependencies {

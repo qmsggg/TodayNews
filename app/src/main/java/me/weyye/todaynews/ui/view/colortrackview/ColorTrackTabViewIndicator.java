@@ -137,11 +137,12 @@ public class ColorTrackTabViewIndicator extends HorizontalScrollView implements 
                     : null;
             final int selectedWidth = selectedChild != null ? selectedChild.getWidth() : 0;
             final int nextWidth = nextChild != null ? nextChild.getWidth() : 0;
-
-            return selectedChild.getLeft()
+            int i = selectedChild.getLeft()
                     + ((int) ((selectedWidth + nextWidth) * positionOffset * 0.5f))
                     + (selectedChild.getWidth() / 2)
                     - (getWidth() / 2);
+            mTranslationX=getWidth()/2+i-mTabWidth/2;
+            return i;
         }
         return 0;
     }
@@ -158,14 +159,13 @@ public class ColorTrackTabViewIndicator extends HorizontalScrollView implements 
     }
 
     public void tabScrolled(int position, float positionOffset) {
-        this.mTranslationX = (getWidth() / this.mTabCount * (position + positionOffset));
 
         if (positionOffset == 0.0F) {
             return;
         }
-        ColorTrackView currentTrackView = (ColorTrackView) this.viewList
+        ColorTrackView currentTrackView =  this.viewList
                 .get(position);
-        ColorTrackView nextTrackView = (ColorTrackView) this.viewList
+        ColorTrackView nextTrackView =  this.viewList
                 .get(position + 1);
         currentTrackView.setDirection(1);
         currentTrackView.setProgress(1.0F - positionOffset);
@@ -176,7 +176,7 @@ public class ColorTrackTabViewIndicator extends HorizontalScrollView implements 
     }
 
     public void tabSelected(int position) {
-        ((ColorTrackView) this.viewList.get(position)).setProgress(1.0F);
+         this.viewList.get(position).setProgress(1.0F);
     }
 
     public void setTitles(String[] titles, CorlorTrackTabBack callBack) {

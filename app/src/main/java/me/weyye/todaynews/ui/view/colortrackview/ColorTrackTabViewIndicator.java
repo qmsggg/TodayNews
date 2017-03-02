@@ -213,7 +213,7 @@ public class ColorTrackTabViewIndicator extends HorizontalScrollView implements 
                         icallBack.onClickButton(index, colorTrackView);
                     }
                     preColorTrackView = colorTrackView;
-                    mTranslationX = (getWidth() / mTabCount * index);
+                    calculateScrollXForTab(index,0);
                     invalidate();
 
                 }

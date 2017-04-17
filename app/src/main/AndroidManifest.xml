@@ -28,10 +28,6 @@
                 <data android:scheme="snssdk32" android:host="detail"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.NestedScrollActivity">
-
-
-        </activity>
         <activity android:name=".ui.activity.ChannelActivity">
              <!--<intent-filter>-->
              <!--<action android:name="android.intent.action.MAIN" />-->

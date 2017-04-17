@@ -74,7 +74,7 @@
         <item name="android:textSize">@dimen/new_title</item>
     </style>
 
-    <style name="my_page_item_root" parent="@style/Clickable" >
+    <style name="my_page_item_root" parent="@style/Clickable">
         <item name="android:paddingLeft">15.0dip</item>
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">45dp</item>
@@ -149,5 +149,9 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">fill_parent</item>
         <item name="android:src">@drawable/leftbackicon_titlebar</item>
+    </style>
+
+    <style name="TextAppearanceBig" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">16sp</item>
     </style>
 </resources>

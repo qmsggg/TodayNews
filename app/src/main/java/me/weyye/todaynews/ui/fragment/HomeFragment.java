@@ -1,7 +1,6 @@
 package me.weyye.todaynews.ui.fragment;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,9 +20,8 @@ import me.weyye.todaynews.base.BaseMvpFragment;
 import me.weyye.todaynews.presenter.HomePresenter;
 import me.weyye.todaynews.ui.activity.ChannelActivity;
 import me.weyye.todaynews.ui.adapter.TitlePagerAdapter;
-import me.weyye.todaynews.ui.view.colortrackview.ColorTrackTabViewIndicator;
-import me.weyye.todaynews.ui.view.colortrackview.ColorTrackView;
-import me.weyye.todaynews.utils.ConstanceValue;
+import me.weyye.todaynews.ui.view.colortrackview.ColorTrackTabLayout;
+import me.weyye.todaynews.utils.CommonUtil;
 import me.weyye.todaynews.view.IHomeView;
 
 /**
@@ -33,7 +31,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements IHom
     @BindView(R.id.feed_top_search_hint)
     TextView feedTopSearchHint;
     @BindView(R.id.tab)
-    ColorTrackTabViewIndicator tab;
+    ColorTrackTabLayout tab;
     @BindView(R.id.icon_category)
     ImageView iconCategory;
     @BindView(R.id.vp)
@@ -60,31 +58,27 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements IHom
     protected void processLogic() {
         List<BaseFragment> fragments = new ArrayList<>();
         for (int i = 0; i < titles.length; i++) {
-            NewsListFragment fragment = new NewsListFragment();
-            Bundle bundle = new Bundle();
-            bundle.putString(ConstanceValue.DATA, titlesCode[i]);
-            fragment.setArguments(bundle);
+            NewsListFragment fragment = NewsListFragment.newInstance(titlesCode[i]);
             fragments.add(fragment);
         }
+
         vp.setAdapter(new TitlePagerAdapter(getChildFragmentManager(), fragments, titles));
-        tab.setTitles(titles, new ColorTrackTabViewIndicator.CorlorTrackTabBack() {
+        vp.setOffscreenPageLimit(titles.length);
+
+        tab.setTabPaddingLeftAndRight(CommonUtil.dip2px(10), CommonUtil.dip2px(10));
+        tab.setupWithViewPager(vp);
+        tab.post(new Runnable() {
             @Override
-            public void onClickButton(Integer position, ColorTrackView colorTrackView) {
-                vp.setCurrentItem(position, false);
+            public void run() {
+                //设置最小宽度，使其可以在滑动一部分距离
+                ViewGroup slidingTabStrip = (ViewGroup) tab.getChildAt(0);
+                slidingTabStrip.setMinimumWidth(slidingTabStrip.getMeasuredWidth() + iconCategory.getMeasuredWidth());
             }
         });
-        final View tabChild = tab.getChildAt(0);
-        int w = View.MeasureSpec.makeMeasureSpec(0,
-                View.MeasureSpec.UNSPECIFIED);
-        int h = View.MeasureSpec.makeMeasureSpec(0,
-                View.MeasureSpec.UNSPECIFIED);
-        //重新测量
-        tabChild.measure(w, h);
-        //设置最小宽度，使其可以在滑动一部分距离
-        tabChild.setMinimumWidth(tabChild.getMeasuredWidth() + tab.getTabWidth());
+        //隐藏指示器
+        tab.setSelectedTabIndicatorHeight(0);
 
-        vp.setOffscreenPageLimit(titles.length);
-        tab.setupViewPager(vp);
+
     }
 
     @Override
@@ -100,7 +94,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements IHom
             case R.id.icon_category:
 //                intent2Activity(ChannelActivity.class);
                 Intent intent = new Intent(mContext, ChannelActivity.class);
-                startActivityForResult(intent,REQUEST_CHANNEL);
+                startActivityForResult(intent, REQUEST_CHANNEL);
                 break;
         }
     }

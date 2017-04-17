@@ -31,14 +31,6 @@ public abstract class BaseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        try {
-//            Field mFactorySet = LayoutInflater.class.getDeclaredField("mFactorySet");
-//            mFactorySet.setAccessible(true);
-//            mFactorySet.set(inflater, false);
-//            LayoutInflaterCompat.setFactory(inflater, new SkinFactory((AppCompatActivity) getActivity()));
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
         return loadViewLayout(inflater, container);
     }
 
@@ -48,10 +40,6 @@ public abstract class BaseFragment extends Fragment {
         mContext = getActivity();
         rootView = view;
         initView(view);
-
-//        if (onFragmentInitFinish != null) {
-//            onFragmentInitFinish.onInitFinish();
-//        }
         mSubscription = toObservable().observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<Notice>() {
             @Override
             public void call(Notice message) {
@@ -80,15 +68,6 @@ public abstract class BaseFragment extends Fragment {
         return (E) rootView.findViewById(id);
     }
 
-//    public static interface OnFragmentInitFinish {
-//        void onInitFinish();
-//    }
-//
-//    private OnFragmentInitFinish onFragmentInitFinish;
-//
-//    public void setOnFragmentInitFinish(OnFragmentInitFinish onFragmentInitFinish) {
-//        this.onFragmentInitFinish = onFragmentInitFinish;
-//    }
 
 
     @Override

@@ -7,8 +7,6 @@ import android.support.v7.app.AppCompatDelegate;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.orhanobut.logger.Logger;
-
 import me.weyye.todaynews.theme.colorUi.widget.ColorImageView;
 import me.weyye.todaynews.theme.colorUi.widget.ColorLinearLayout;
 import me.weyye.todaynews.theme.colorUi.widget.ColorRelativeLayout;
@@ -40,7 +38,7 @@ public class SkinFactory implements LayoutInflaterFactory {
                 break;
             case "ImageView":
                 view = new ColorImageView(context, attrs);
-                Logger.i("ImageView 转换成"+view.getClass().getSimpleName());
+//                Logger.i("ImageView 转换成"+view.getClass().getSimpleName());
                 break;
             case "RelativeLayout":
                 view = new ColorRelativeLayout(context, attrs);

@@ -127,6 +127,10 @@ public class ColorTrackView extends View {
         return result;
     }
 
+    public int getTextWidth() {
+        return mTextWidth;
+    }
+
     private void measureText() {
         mTextWidth = (int) mPaint.measureText(mText);
         FontMetrics fm = mPaint.getFontMetrics();

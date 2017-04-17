@@ -1,6 +1,7 @@
 package me.weyye.todaynews.ui.fragment;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -48,6 +49,13 @@ public class NewsListFragment extends BaseMvpFragment<NewsListPresenter> impleme
         View v = inflater.inflate(R.layout.layout_recyclerview, null);
         ButterKnife.bind(this, v);
         return v;
+    }
+    public static NewsListFragment newInstance(String code){
+        NewsListFragment fragment = new NewsListFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstanceValue.DATA, code);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override

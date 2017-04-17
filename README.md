@@ -4,10 +4,10 @@
 # Blog
 
 [Android仿今日头条的开源项目](http://www.weyye.me/detail/my-project-today-news/)
+[自适应Tab宽度可以滑动文字逐渐变色的TabLayout](http://www.weyye.me/detail/color-track-tablayout/)
+# Apk
 
-#Apk
-
-[点击下载](http://fir.im/np8w)
+[点击下载](/screenshot/todaynews.apk)
 
 # 项目截图
 
@@ -30,6 +30,7 @@
 
 
 # 第三方库
+* [ColorTrackTabLayout](https://github.com/yewei02538/ColorTrackTabLayout)
 * [BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper)
 * [ImageLoader](https://github.com/nostra13/Android-Universal-Image-Loader)
 * [Retrofit](https://github.com/square/retrofit)

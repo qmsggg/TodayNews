@@ -1,6 +1,5 @@
 package me.weyye.todaynews.ui.fragment;
 
-import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
@@ -12,8 +11,7 @@ import butterknife.ButterKnife;
 import me.weyye.todaynews.R;
 import me.weyye.todaynews.base.BaseFragment;
 import me.weyye.todaynews.ui.adapter.TitlePagerAdapter;
-import me.weyye.todaynews.ui.view.colortrackview.ColorTrackTabViewIndicator;
-import me.weyye.todaynews.ui.view.colortrackview.ColorTrackView;
+import me.weyye.todaynews.ui.view.colortrackview.ColorTrackTabLayout;
 
 /**
  * Created by Administrator on 2017/2/8 0008.
@@ -21,13 +19,13 @@ import me.weyye.todaynews.ui.view.colortrackview.ColorTrackView;
 
 public abstract class BasePagerFragment extends BaseFragment {
     @BindView(R.id.tab)
-    ColorTrackTabViewIndicator tab;
+    ColorTrackTabLayout tab;
     @BindView(R.id.vp)
     ViewPager vp;
 
     protected abstract String[] getTitles();
-    protected abstract Class<? extends BaseFragment> getSubFragmentClass();
-    protected abstract Bundle getSubFragmentArguments(int i);
+
+    protected abstract BaseFragment getFragment(int position);
 
 
     @Override
@@ -37,29 +35,17 @@ public abstract class BasePagerFragment extends BaseFragment {
 
     @Override
     protected void processLogic() {
-
-        try {
-            List<BaseFragment> fragments = new ArrayList<>();
-            for (int i = 0; i < getTitles().length; i++) {
-                BaseFragment fragment=getSubFragmentClass().newInstance();
-                fragment.setArguments(getSubFragmentArguments(i));
-                fragments.add(fragment);
-            }
-            vp.setAdapter(new TitlePagerAdapter(getChildFragmentManager(), fragments, getTitles()));
-            tab.setTitles(getTitles(), new ColorTrackTabViewIndicator.CorlorTrackTabBack() {
-                @Override
-                public void onClickButton(Integer position, ColorTrackView colorTrackView) {
-                    vp.setCurrentItem(position, false);
-                }
-            });
-            vp.setOffscreenPageLimit(getTitles().length);
-            tab.setupViewPager(vp);
-
-        } catch (java.lang.InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        List<BaseFragment> fragments = new ArrayList<>();
+        for (int i = 0; i < getTitles().length; i++) {
+            BaseFragment fragment = getFragment(i);
+            fragments.add(fragment);
         }
+        vp.setAdapter(new TitlePagerAdapter(getChildFragmentManager(), fragments, getTitles()));
+        tab.setTabPaddingLeftAndRight(20, 20);
+        tab.setSelectedTabIndicatorHeight(0);
+        tab.setupWithViewPager(vp);
+        vp.setOffscreenPageLimit(getTitles().length);
+
     }
 
     @Override

@@ -26,12 +26,26 @@ public class ViewAttributeUtil {
 //                if (null != str) {
                 if (null != str && (str.startsWith("?") || paramInt == android.R.attr.src || paramInt == android.R.attr.background)) {
                     //因为要动态改图片，图片没有用自定义属性
-                    value = Integer.valueOf(str.substring(1, str.length())).intValue();
+                    value = getValue(str);
                     return value;
                 }
             }
         }
         return value;
+    }
+
+    public static int getAttributeValue(AttributeSet attr, String nameSpace, String name) {
+        int value = -1;
+        String str = attr.getAttributeValue(nameSpace, name);
+        if (null != str && (str.startsWith("?"))) {
+            value = getValue(str);
+        }
+        return value;
+    }
+
+
+    public static int getValue(String value) {
+        return Integer.valueOf(value.substring(1, value.length())).intValue();
     }
 
     public static int getBackgroundAttibute(AttributeSet attr) {
@@ -134,7 +148,8 @@ public class ViewAttributeUtil {
     public static boolean isLightTheme() {
         return SharedPreferencesMgr.getInt(ConstanceValue.SP_THEME, ConstanceValue.THEME_LIGHT) == ConstanceValue.THEME_LIGHT;
     }
-    public static int createResource(Resources res,int resId) {
+
+    public static int createResource(Resources res, int resId) {
         String resourceName = res.getResourceName(resId);
         if (resourceName.contains("drawable")) {
             //是drawable

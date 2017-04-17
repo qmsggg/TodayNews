@@ -5,7 +5,8 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <me.weyye.todaynews.ui.view.colortrackview.ColorTrackTabViewIndicator
+
+    <me.weyye.todaynews.ui.view.colortrackview.ColorTrackTabLayout
         android:id="@+id/tab"
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -13,12 +14,11 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:background="?attr/main_bg"
-        app:ctMode="scrollable"
-        app:ctTabSelectedTextColor="@color/ssxinhongse1"
-        app:ctTabTextColor="?attr/font_color"
-        app:ctTabTextSize="16sp"
-        app:ctTabWidth="70dp"
-        app:isColorUi="true"></me.weyye.todaynews.ui.view.colortrackview.ColorTrackTabViewIndicator>
+        app:isColorUi="true"
+        app:tabMode="scrollable"
+        app:tabSelectedTextColor="@color/ssxinhongse1"
+        app:tabTextAppearance="@style/TextAppearanceBig"
+        app:tabTextColor="?attr/font_color"/>
 
     <View
         android:layout_width="match_parent"

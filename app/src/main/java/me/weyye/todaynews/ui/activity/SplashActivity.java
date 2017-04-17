@@ -9,8 +9,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.orhanobut.logger.Logger;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -78,7 +76,6 @@ public class SplashActivity extends BaseActivity {
                 .subscribe(new Subscriber<Integer>() {
                     @Override
                     public void onCompleted() {
-                        Logger.i("结束倒计时");
                         goMain();
                     }
 
@@ -89,7 +86,6 @@ public class SplashActivity extends BaseActivity {
 
                     @Override
                     public void onNext(Integer integer) {
-                        Logger.i("正在倒计时：" + integer);
                         mSkipReal.setText(TextUtils.concat(integer.intValue() + "s", getResources().getString(R.string.splash_ad_ignore)));
                     }
                 });

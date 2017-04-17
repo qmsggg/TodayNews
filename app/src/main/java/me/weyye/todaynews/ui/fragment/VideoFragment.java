@@ -28,15 +28,18 @@ public class VideoFragment extends BasePagerFragment {
     }
 
     @Override
-    protected Class<? extends BaseFragment> getSubFragmentClass() {
-        return VideoListFragment.class;
+    protected BaseFragment getFragment(int position) {
+
+        return VideoFragment.newInstance(titlesCode[position]);
     }
 
-    @Override
-    protected Bundle getSubFragmentArguments(int i) {
+
+    public static VideoListFragment newInstance(String code) {
+        VideoListFragment fragment = new VideoListFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(ConstanceValue.DATA, titlesCode[i]);
-        return bundle;
+        bundle.putString(ConstanceValue.DATA, code);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override

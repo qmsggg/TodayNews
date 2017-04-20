@@ -5,6 +5,8 @@ package me.weyye.todaynews.utils;
  */
 public interface ConstanceValue {
     String DATA = "data";
+    String DATA_SELECTED = "dataSelected";
+    String DATA_UNSELECTED = "dataUnselected";
     String ARTICLE_GENRE_GALLERY = "gallery";
     String ARTICLE_GENRE_VIDEO = "video";
     String ARTICLE_GENRE_ARTICLE = "article";
@@ -16,4 +18,7 @@ public interface ConstanceValue {
      * 修改主题
      */
     int MSG_TYPE_CHANGE_THEME = 100;
+
+    String TITLE_SELECTED = "explore_title_selected";
+    String TITLE_UNSELECTED = "explore_title_unselected";
 }

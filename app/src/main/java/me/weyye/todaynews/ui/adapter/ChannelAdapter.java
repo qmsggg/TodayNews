@@ -145,15 +145,17 @@ public class ChannelAdapter extends BaseMultiItemQuickAdapter<Channel> {
 
                                 //我的频道 移动到 推荐频道的第一个
                                 channel.setItemType(Channel.TYPE_OTHER_CHANNEL);//改为推荐频道类型
+
                                 if (onChannelDragListener != null)
-                                    onChannelDragListener.onItemMove(currentPosition, otherFirstPosition - 1);
+                                    onChannelDragListener.onMoveToOtherChannel(currentPosition, otherFirstPosition - 1);
                                 startAnimation(currentView, targetX, targetY);
                             } else {
                                 channel.setItemType(Channel.TYPE_OTHER_CHANNEL);//改为推荐频道类型
                                 if (otherFirstPosition == -1) otherFirstPosition = mData.size();
                                 if (onChannelDragListener != null)
-                                    onChannelDragListener.onItemMove(currentPosition, otherFirstPosition - 1);
+                                    onChannelDragListener.onMoveToOtherChannel(currentPosition, otherFirstPosition - 1);
                             }
+//                            GlobalParams.mRemovedChannels.add(channel);
                         }
                     }
 
@@ -191,24 +193,26 @@ public class ChannelAdapter extends BaseMultiItemQuickAdapter<Channel> {
                                     }
 
 
-                                    //我的频道 移动到 推荐频道的第一个
+                                    // 推荐频道 移动到 我的频道的最后一个
                                     channel.setItemType(Channel.TYPE_MY_CHANNEL);//改为推荐频道类型
                                     if (onChannelDragListener != null)
-                                        onChannelDragListener.onItemMove(currentPosition, myLastPosition + 1);
+                                        onChannelDragListener.onMoveToMyChannel(currentPosition, myLastPosition + 1);
                                     startAnimation(currentView, targetX, targetY);
                                 } else {
                                     channel.setItemType(Channel.TYPE_MY_CHANNEL);//改为推荐频道类型
                                     if (myLastPosition == -1) myLastPosition = 0;//我的频道没有了，改成0
                                     if (onChannelDragListener != null)
-                                        onChannelDragListener.onItemMove(currentPosition, myLastPosition + 1);
+                                        onChannelDragListener.onMoveToMyChannel(currentPosition, myLastPosition + 1);
                                 }
+//                                GlobalParams.mRemovedChannels.remove(channel);
+
                             }
                         });
                 break;
         }
     }
 
-    private int getMyChannelSize() {
+    public int getMyChannelSize() {
         int size = 0;
         for (int i = 0; i < mData.size(); i++) {
             Channel channel = (Channel) mData.get(i);

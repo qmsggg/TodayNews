@@ -23,6 +23,7 @@ import me.weyye.todaynews.presenter.NewsListPresenter;
 import me.weyye.todaynews.ui.activity.NewsDetailActivity;
 import me.weyye.todaynews.ui.activity.VideoDetailActivity;
 import me.weyye.todaynews.ui.adapter.NewsAdapter;
+import me.weyye.todaynews.ui.view.LoadingFlashView;
 import me.weyye.todaynews.utils.ConstanceValue;
 import me.weyye.todaynews.view.INewsListView;
 
@@ -35,6 +36,8 @@ public class NewsListFragment extends BaseMvpFragment<NewsListPresenter> impleme
     public RecyclerView recyclerView;
     @BindView(R.id.srl)
     SwipeRefreshLayout srl;
+    @BindView(R.id.loadingView)
+    LoadingFlashView loadingView;
     private String mTitleCode = "";
     protected List<News> mDatas = new ArrayList<>();
     protected BaseQuickAdapter mAdapter;
@@ -50,7 +53,8 @@ public class NewsListFragment extends BaseMvpFragment<NewsListPresenter> impleme
         ButterKnife.bind(this, v);
         return v;
     }
-    public static NewsListFragment newInstance(String code){
+
+    public static NewsListFragment newInstance(String code) {
         NewsListFragment fragment = new NewsListFragment();
         Bundle bundle = new Bundle();
         bundle.putString(ConstanceValue.DATA, code);
@@ -66,8 +70,8 @@ public class NewsListFragment extends BaseMvpFragment<NewsListPresenter> impleme
     protected void processLogic() {
         initCommonRecyclerView(createAdapter(), null);
         mTitleCode = getArguments().getString(ConstanceValue.DATA);
-        srl.measure(0, 0);
-        srl.setRefreshing(true);
+//        srl.measure(0, 0);
+//        srl.setRefreshing(true);
     }
 
     protected BaseQuickAdapter createAdapter() {
@@ -80,6 +84,19 @@ public class NewsListFragment extends BaseMvpFragment<NewsListPresenter> impleme
         super.lazyLoad();
         if (TextUtils.isEmpty(mTitleCode))
             mTitleCode = getArguments().getString(ConstanceValue.DATA);
+        if (mvpPresenter.mvpView == null)
+            mvpPresenter = createPresenter();
+        getData();
+    }
+
+    private void getData() {
+        if (mDatas.size() == 0) {
+
+            //没加载过数据
+            if (loadingView == null) loadingView = get(R.id.loadingView);
+            loadingView.setVisibility(View.VISIBLE);
+            loadingView.showLoading();
+        }
         mvpPresenter.getNewsList(mTitleCode);
     }
 
@@ -88,7 +105,7 @@ public class NewsListFragment extends BaseMvpFragment<NewsListPresenter> impleme
         srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mvpPresenter.getNewsList(mTitleCode);
+                getData();
             }
         });
         mAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
@@ -109,12 +126,21 @@ public class NewsListFragment extends BaseMvpFragment<NewsListPresenter> impleme
         });
     }
 
+
     @Override
     public void onGetNewsListSuccess(List<News> response) {
         //由于最后一条重复 ，删除掉
-        if (response.size() > 0) response.remove(response.size() - 1);
+        if (response.size() > 0) {
+            response.remove(response.size() - 1);
+            loadingView.setVisibility(View.GONE);
+        }
         srl.setRefreshing(false);
         mDatas.addAll(0, response);
         mAdapter.notifyItemRangeChanged(0, response.size());
+    }
+
+    @Override
+    public void onError() {
+        srl.setRefreshing(false);
     }
 }

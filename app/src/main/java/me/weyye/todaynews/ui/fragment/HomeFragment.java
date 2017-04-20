@@ -1,12 +1,16 @@
 package me.weyye.todaynews.ui.fragment;
 
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,17 +21,24 @@ import butterknife.OnClick;
 import me.weyye.todaynews.R;
 import me.weyye.todaynews.base.BaseFragment;
 import me.weyye.todaynews.base.BaseMvpFragment;
+import me.weyye.todaynews.listener.OnChannelListener;
+import me.weyye.todaynews.model.Channel;
 import me.weyye.todaynews.presenter.HomePresenter;
-import me.weyye.todaynews.ui.activity.ChannelActivity;
-import me.weyye.todaynews.ui.adapter.TitlePagerAdapter;
+import me.weyye.todaynews.theme.colorUi.util.SharedPreferencesMgr;
+import me.weyye.todaynews.ui.adapter.ChannelPagerAdapter;
+import me.weyye.todaynews.ui.view.ChannelDialogFragment;
 import me.weyye.todaynews.ui.view.colortrackview.ColorTrackTabLayout;
 import me.weyye.todaynews.utils.CommonUtil;
+import me.weyye.todaynews.utils.ConstanceValue;
 import me.weyye.todaynews.view.IHomeView;
+
+import static me.weyye.todaynews.utils.ConstanceValue.TITLE_SELECTED;
+import static me.weyye.todaynews.utils.ConstanceValue.TITLE_UNSELECTED;
 
 /**
  * Created by Administrator on 2016/11/17 0017.
  */
-public class HomeFragment extends BaseMvpFragment<HomePresenter> implements IHomeView {
+public class HomeFragment extends BaseMvpFragment<HomePresenter> implements IHomeView, OnChannelListener {
     @BindView(R.id.feed_top_search_hint)
     TextView feedTopSearchHint;
     @BindView(R.id.tab)
@@ -35,9 +46,13 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements IHom
     @BindView(R.id.icon_category)
     ImageView iconCategory;
     @BindView(R.id.vp)
-    ViewPager vp;
-    private String[] titles = new String[]{"推荐", "视频", "热点", "社会", "娱乐", "科技", "汽车", "体育", "财经", "军事", "国际", "时尚", "游戏", "旅游", "历史", "探索", "美食", "育儿", "养生", "故事", "美文"};
-    private String[] titlesCode = new String[]{"__all__", "video", "news_hot", "news_society", "news_entertainment", "news_tech", "news_car", "news_sports", "news_finance", "news_military", "news_world", "news_fashion", "news_game", "news_travel", "news_history", "news_discovery", "news_food", "news_baby", "news_regimen", "news_story", "news_essay"};
+    ViewPager mVp;
+    private ChannelPagerAdapter mTitlePagerAdapter;
+
+    public List<Channel> mSelectedDatas = new ArrayList<>();
+    public List<Channel> mUnSelectedDatas = new ArrayList<>();
+    private List<BaseFragment> mFragments;
+    private Gson mGson = new Gson();
 
     @Override
     protected HomePresenter createPresenter() {
@@ -56,17 +71,18 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements IHom
 
     @Override
     protected void processLogic() {
-        List<BaseFragment> fragments = new ArrayList<>();
-        for (int i = 0; i < titles.length; i++) {
-            NewsListFragment fragment = NewsListFragment.newInstance(titlesCode[i]);
-            fragments.add(fragment);
+        getTitleData();
+        mFragments = new ArrayList<>();
+        for (int i = 0; i < mSelectedDatas.size(); i++) {
+            NewsListFragment fragment = NewsListFragment.newInstance(mSelectedDatas.get(i).TitleCode);
+            mFragments.add(fragment);
         }
-
-        vp.setAdapter(new TitlePagerAdapter(getChildFragmentManager(), fragments, titles));
-        vp.setOffscreenPageLimit(titles.length);
+        mTitlePagerAdapter = new ChannelPagerAdapter(getChildFragmentManager(), mFragments, mSelectedDatas);
+        mVp.setAdapter(mTitlePagerAdapter);
+        mVp.setOffscreenPageLimit(mSelectedDatas.size());
 
         tab.setTabPaddingLeftAndRight(CommonUtil.dip2px(10), CommonUtil.dip2px(10));
-        tab.setupWithViewPager(vp);
+        tab.setupWithViewPager(mVp);
         tab.post(new Runnable() {
             @Override
             public void run() {
@@ -81,21 +97,102 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements IHom
 
     }
 
+    /**
+     * 获取标题数据
+     */
+    private void getTitleData() {
+
+        String selectTitle = SharedPreferencesMgr.getString(TITLE_SELECTED, "");
+        String unselectTitle = SharedPreferencesMgr.getString(TITLE_UNSELECTED, "");
+        if (TextUtils.isEmpty(selectTitle) || TextUtils.isEmpty(unselectTitle)) {
+            //本地没有title
+            String[] titleStr = getResources().getStringArray(R.array.home_title);
+            String[] titlesCode = getResources().getStringArray(R.array.home_title_code);
+            //默认添加了全部频道
+            for (int i = 0; i < titlesCode.length; i++) {
+                String t = titleStr[i];
+                String code = titlesCode[i];
+                mSelectedDatas.add(new Channel(t, code));
+            }
+
+            String selectedStr = mGson.toJson(mSelectedDatas);
+            SharedPreferencesMgr.setString(TITLE_SELECTED, selectedStr);
+        } else {
+            //之前添加过
+            List<Channel> selecteData = mGson.fromJson(selectTitle, new TypeToken<List<Channel>>() {
+            }.getType());
+            List<Channel> unselecteData = mGson.fromJson(unselectTitle, new TypeToken<List<Channel>>() {
+            }.getType());
+            mSelectedDatas.addAll(selecteData);
+            mUnSelectedDatas.addAll(unselecteData);
+        }
+
+    }
+
     @Override
     protected void setListener() {
 
     }
 
-    static final int REQUEST_CHANNEL = 111;
 
     @OnClick({R.id.feed_top_search_hint, R.id.icon_category})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.icon_category:
-//                intent2Activity(ChannelActivity.class);
-                Intent intent = new Intent(mContext, ChannelActivity.class);
-                startActivityForResult(intent, REQUEST_CHANNEL);
+                ChannelDialogFragment dialogFragment = ChannelDialogFragment.newInstance(mSelectedDatas, mUnSelectedDatas);
+                dialogFragment.setOnChannelListener(this);
+                dialogFragment.show(getChildFragmentManager(), "CHANNEL");
+                dialogFragment.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        mVp.setOffscreenPageLimit(mSelectedDatas.size());
+                        mTitlePagerAdapter.notifyDataSetChanged();
+                        tab.setCurrentItem(tab.getSelectedTabPosition());
+                        ViewGroup slidingTabStrip = (ViewGroup) tab.getChildAt(0);
+                        //注意：因为最开始设置了最小宽度，所以重新测量宽度的时候一定要先将最小宽度设置为0
+                        slidingTabStrip.setMinimumWidth(0);
+                        slidingTabStrip.measure(0, 0);
+                        slidingTabStrip.setMinimumWidth(slidingTabStrip.getMeasuredWidth() + iconCategory.getMeasuredWidth());
+
+                        //保存选中和未选中的channel
+                        SharedPreferencesMgr.setString(ConstanceValue.TITLE_SELECTED, mGson.toJson(mSelectedDatas));
+                        SharedPreferencesMgr.setString(ConstanceValue.TITLE_UNSELECTED, mGson.toJson(mUnSelectedDatas));
+
+                    }
+                });
                 break;
         }
     }
+
+
+    @Override
+    public void onItemMove(int starPos, int endPos) {
+        listMove(mSelectedDatas, starPos, endPos);
+        listMove(mFragments, starPos, endPos);
+    }
+
+
+    @Override
+    public void onMoveToMyChannel(int starPos, int endPos) {
+        //移动到我的频道
+        Channel channel = mUnSelectedDatas.remove(starPos);
+        mSelectedDatas.add(endPos, channel);
+        mFragments.add(NewsListFragment.newInstance(channel.TitleCode));
+    }
+
+    @Override
+    public void onMoveToOtherChannel(int starPos, int endPos) {
+        //移动到推荐频道
+        mUnSelectedDatas.add(endPos, mSelectedDatas.remove(starPos));
+        mFragments.remove(starPos);
+    }
+
+    private void listMove(List datas, int starPos, int endPos) {
+        Object o = datas.get(starPos);
+        //先删除之前的位置
+        datas.remove(starPos);
+        //添加到现在的位置
+        datas.add(endPos, o);
+    }
+
 }

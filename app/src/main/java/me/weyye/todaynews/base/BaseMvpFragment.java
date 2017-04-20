@@ -28,6 +28,7 @@ public abstract class BaseMvpFragment<P extends BasePresenter> extends BaseFragm
         if (mvpPresenter == null) mvpPresenter = createPresenter();
         super.lazyLoad();
     }
+
     protected abstract P createPresenter();
 
 
@@ -36,10 +37,11 @@ public abstract class BaseMvpFragment<P extends BasePresenter> extends BaseFragm
         super.onDestroyView();
         if (mvpPresenter != null) {
             mvpPresenter.detachView();
+            mvpPresenter = null;
         }
     }
 
-//    protected UserInfo user;
+    //    protected UserInfo user;
 
     public RecyclerView initCommonRecyclerView(BaseQuickAdapter adapter, RecyclerView.ItemDecoration decoration) {
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
@@ -83,23 +85,5 @@ public abstract class BaseMvpFragment<P extends BasePresenter> extends BaseFragm
         return recyclerView;
     }
 
-//    @Override
-//    public void onViewCreated(View view, Bundle savedInstanceState) {
-//        user = BaseApplication.getInstance().getUserInfo();
-//        super.onViewCreated(view, savedInstanceState);
-//    }
-//
-//    @Override
-//    public void onResume() {
-//        user = BaseApplication.getInstance().getUserInfo();
-//        super.onResume();
-//    }
-//    public boolean checkLogin() {
-//        if (user == null) {
-//            intent2Activity(LoginActivity.class);
-//            return false;
-//        }
-//        return true;
-//    }
 
 }

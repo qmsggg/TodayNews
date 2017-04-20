@@ -27,6 +27,11 @@ public class NewsListPresenter extends BasePresenter<INewsListView> {
 
             }
 
+            @Override
+            protected void onError() {
+                super.onError();
+                mvpView.onError();
+            }
         });
     }
 }

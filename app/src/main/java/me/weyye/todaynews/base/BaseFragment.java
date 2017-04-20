@@ -16,15 +16,13 @@ import me.weyye.todaynews.model.Notice;
 import me.weyye.todaynews.utils.RxBus;
 import rx.Observable;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 
 /**
  * Created by Administrator on 2016/8/4 0004.
  */
 public abstract class BaseFragment extends Fragment {
     protected Activity mContext;
-    protected boolean isFirst = true;
+    protected boolean mIsFirstVisible = true;
     protected View rootView;
     protected Subscription mSubscription;
 
@@ -40,14 +38,11 @@ public abstract class BaseFragment extends Fragment {
         mContext = getActivity();
         rootView = view;
         initView(view);
-        mSubscription = toObservable().observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<Notice>() {
-            @Override
-            public void call(Notice message) {
-//                if (message.type == ConstanceValue.MSG_TYPE_CHANGE_THEME)
-//                    ColorUiUtil.changeTheme(rootView, getActivity().getTheme());
-            }
-
-        });
+        boolean isVis = isHidden() || getUserVisibleHint();
+        if (isVis && mIsFirstVisible) {
+            lazyLoad();
+            mIsFirstVisible = false;
+        }
     }
 
 
@@ -67,7 +62,6 @@ public abstract class BaseFragment extends Fragment {
     protected <E extends View> E get(int id) {
         return (E) rootView.findViewById(id);
     }
-
 
 
     @Override
@@ -94,9 +88,9 @@ public abstract class BaseFragment extends Fragment {
      * 当界面可见时的操作
      */
     protected void onVisible() {
-        if (isFirst) {
+        if (mIsFirstVisible && isResumed()) {
             lazyLoad();
-            isFirst = false;
+            mIsFirstVisible = false;
         }
     }
 

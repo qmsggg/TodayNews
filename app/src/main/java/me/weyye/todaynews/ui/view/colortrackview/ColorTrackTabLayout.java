@@ -36,6 +36,13 @@ public class ColorTrackTabLayout extends TabLayout implements ColorUiInterface {
     private ColorTrackView preColorTrackView;
     private int mAttr_textColor = -1;
 
+    private static final int INVALID_TAB_POS = -1;
+
+    /*
+    * 最后选中的postition
+    */
+    private int mLastSelectedTabPosition = INVALID_TAB_POS;
+
 
     public ColorTrackTabLayout(Context context) {
         this(context, null);
@@ -98,11 +105,12 @@ public class ColorTrackTabLayout extends TabLayout implements ColorUiInterface {
         tab.setCustomView(colorTrackView);
 
         super.addTab(tab, position, setSelected);
-        if (position == 0) {
-            //默认选中第一个
+
+
+        int selectedTabPosition = getSelectedTabPosition();
+        if ((selectedTabPosition == INVALID_TAB_POS && position == 0) || (selectedTabPosition == position)) {
             setSelectedView(position);
         }
-
         setTabWidth(position, colorTrackView);
     }
 
@@ -147,11 +155,14 @@ public class ColorTrackTabLayout extends TabLayout implements ColorUiInterface {
         }
     }
 
+    private ViewPager mViewPager;
 
     @Override
     public void setupWithViewPager(@Nullable ViewPager viewPager, boolean autoRefresh) {
         super.setupWithViewPager(viewPager, autoRefresh);
         try {
+            if (viewPager != null)
+                mViewPager = viewPager;
             //通过反射找到mPageChangeListener
             Field field = TabLayout.class.getDeclaredField("mPageChangeListener");
             field.setAccessible(true);
@@ -249,6 +260,8 @@ public class ColorTrackTabLayout extends TabLayout implements ColorUiInterface {
                 TypedArray ta = themeId.obtainStyledAttributes(new int[]{mAttr_textColor});
                 int resourceId = ta.getColor(0, 0);
                 ta.recycle();
+                if (mTabTextColor != resourceId)
+                    mTabTextColor = resourceId;
                 colorTrackView.setTextOriginColor(resourceId);
             }
             if (mAttr_selectedTextColor != -1) {
@@ -264,5 +277,24 @@ public class ColorTrackTabLayout extends TabLayout implements ColorUiInterface {
             ViewAttributeUtil.applyBackgroundDrawable(this, themeId, mAttr_background);
         }
 //        ViewAttributeUtil.applyTextColor(this, themeId, mTabTextColor);
+    }
+
+    @Override
+    public void removeAllTabs() {
+        // Retain last selected position before removing all tabs
+        mLastSelectedTabPosition = getSelectedTabPosition();
+        super.removeAllTabs();
+    }
+
+    @Override
+    public int getSelectedTabPosition() {
+        // Override selected tab position to return your last selected tab position
+        final int selectedTabPositionAtParent = super.getSelectedTabPosition();
+        return selectedTabPositionAtParent == INVALID_TAB_POS ?
+                mLastSelectedTabPosition : selectedTabPositionAtParent;
+    }
+
+    public void setCurrentItem(int position) {
+        mViewPager.setCurrentItem(position);
     }
 }

@@ -9,8 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 
-import com.orhanobut.logger.Logger;
-
 /**
  * Created by Administrator on 2017/2/7 0007.
  */
@@ -83,7 +81,6 @@ public class HeaderZoomLayout extends ScrollView {
                         break;
                     }
                 }
-                Logger.i("ev.getY():" + ev.getY());
                 if(ev.getY()-mLastY<0)
                     return super.onTouchEvent(ev);
                 int distance = (int) ((ev.getY() - mLastY) * mScaleRatio);

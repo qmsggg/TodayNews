@@ -10,4 +10,5 @@ import me.weyye.todaynews.model.News;
 public interface INewsListView {
     void onGetNewsListSuccess(List<News> response);
 
+    void onError();
 }

@@ -45,9 +45,8 @@ public class ProgressWebView extends WebView {
 
             @Override
             public void onPageFinished(WebView view, String url) {
-//                view.loadUrl("javascript:window.local_obj.showSource('<head>'+" +
-//                        "document.getElementsByTagName('html')[0].innerHTML+'</head>');");
-                view.loadUrl("javascript:(function(){function loadScript(url,callback){var head=document.head,script;script=document.createElement('script');script.async=false;script.type='text/javascript';script.charset='utf-8';script.src=url;head.insertBefore(script,head.firstChild);if(callback){script.addEventListener('load',callback,false)}}function sendMsg(argument){var min_image_size=100;var title='',desc='',icon='',title_ele=document.querySelector('title'),desc_ele=document.querySelector('meta[name=description]');if(title_ele){title=title_ele.innerText}if(desc_ele){desc=desc_ele.content}var imgs=document.querySelectorAll('body img');for(var i=0;i<imgs.length;i++){var img=imgs[i];if(img.naturalWidth>min_image_size&&img.naturalHeight>min_image_size){icon=img.src;break}}window.ToutiaoJSBridge.call('shareInfo',{'title':title,'desc':desc,'image':icon,'url':location.href})}if(!window.ToutiaoJSBridge){var protocol=location.protocol.indexOf('https')>-1?'https://':'http://';loadScript(protocol+'s2.pstatp.com/inapp/toutiao.js',sendMsg)}else{sendMsg()}})();");
+                view.loadUrl("javascript:window.local_obj.showSource('<head>'+" +
+                        "document.getElementsByTagName('html')[0].innerHTML+'</head>');");
                 super.onPageFinished(view, url);
             }
         });

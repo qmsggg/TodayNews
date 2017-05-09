@@ -33,6 +33,7 @@ public class EasyJCVideoPlayer extends JCVideoPlayerStandard {
         tvDuration = (TextView) findViewById(R.id.tvDuration);
     }
 
+
     @Override
     public void setUiWitStateAndScreen(int state) {
         super.setUiWitStateAndScreen(state);
@@ -41,8 +42,8 @@ public class EasyJCVideoPlayer extends JCVideoPlayerStandard {
                 //隐藏时长
                 llDuration.setVisibility(View.GONE);
                 break;
-             case CURRENT_STATE_AUTO_COMPLETE:
-             case CURRENT_STATE_ERROR:
+            case CURRENT_STATE_AUTO_COMPLETE:
+            case CURRENT_STATE_ERROR:
                 //显示时长
                 llDuration.setVisibility(View.VISIBLE);
                 break;
@@ -56,8 +57,7 @@ public class EasyJCVideoPlayer extends JCVideoPlayerStandard {
         llDuration.setVisibility(View.VISIBLE);
     }
 
-    public void setDurationText(String text)
-    {
+    public void setDurationText(String text) {
         tvDuration.setText(text);
     }
 

@@ -7,12 +7,11 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import me.weyye.todaynews.R;
-import me.weyye.todaynews.model.CommentList;
-import me.weyye.todaynews.presenter.NewsDetailPresenter;
-import me.weyye.todaynews.view.INewsDetailView;
+import me.weyye.todaynews.model.NewsDetail;
+import me.weyye.todaynews.ui.view.NewsDetailHeaderView;
 
 
-public class NewsDetailActivity extends BaseNewsActivity<NewsDetailPresenter> implements INewsDetailView {
+public class NewsDetailActivity extends BaseNewsActivity {
 
     @BindView(R.id.back_btn)
     ImageView backBtn;
@@ -20,6 +19,7 @@ public class NewsDetailActivity extends BaseNewsActivity<NewsDetailPresenter> im
     TextView title;
     @BindView(R.id.share_btn)
     ImageView shareBtn;
+    private NewsDetailHeaderView mHeaderView;
 
     @Override
     protected void loadViewLayout() {
@@ -27,20 +27,20 @@ public class NewsDetailActivity extends BaseNewsActivity<NewsDetailPresenter> im
         super.loadViewLayout();
     }
 
+    @Override
+    public View createHeader() {
+        return mHeaderView = new NewsDetailHeaderView(this);
+    }
+
     @OnClick(R.id.back_btn)
     public void onBackClick(View view) {
         finish();
     }
 
-    @Override
-    protected NewsDetailPresenter createPresenter() {
-        return new NewsDetailPresenter(this);
-    }
 
     @Override
-    public void onGetCommentSuccess(CommentList response) {
-        getCommentSuccess(response);
+    public void onGetNewsDetailSuccess(NewsDetail response) {
+        mHeaderView.setDetail(response);
     }
-
 
 }

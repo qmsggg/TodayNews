@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.v4.view.LayoutInflaterCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -11,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -23,6 +25,7 @@ import me.weyye.todaynews.model.Notice;
 import me.weyye.todaynews.theme.colorUi.SkinFactory;
 import me.weyye.todaynews.theme.colorUi.util.ColorUiUtil;
 import me.weyye.todaynews.theme.colorUi.util.SharedPreferencesMgr;
+import me.weyye.todaynews.ui.view.SwipeBackLayout;
 import me.weyye.todaynews.utils.ConstanceValue;
 import me.weyye.todaynews.utils.RxBus;
 import rx.Observable;
@@ -41,6 +44,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected Context mContext;
     private CompositeSubscription mCompositeSubscription;
     protected Subscription mSubscription;
+    private SwipeBackLayout mSwipeBackLayout;
+//    private ImageView mIvShadow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +67,38 @@ public abstract class BaseActivity extends AppCompatActivity {
         setLayoutInflaterFactory();
         initView(savedInstanceState);
     }
+
+    @Override
+    public void setContentView(@LayoutRes int layoutResID) {
+        super.setContentView(getContainer());
+        View view = LayoutInflater.from(this).inflate(layoutResID, null);
+        mSwipeBackLayout.addView(view);
+    }
+
+    private View getContainer() {
+        RelativeLayout container = new RelativeLayout(this);
+        mSwipeBackLayout = new SwipeBackLayout(this);
+        mSwipeBackLayout.setDragEdge(SwipeBackLayout.DragEdge.LEFT);
+//        mIvShadow = new ImageView(this);
+//        mIvShadow.setBackgroundColor(getResources().getColor(R.color.black));
+//        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+//        container.addView(mIvShadow, params);
+        container.addView(mSwipeBackLayout);
+        return container;
+    }
+
+    public void setEnableSwipe(boolean enableSwipe) {
+        mSwipeBackLayout.setEnablePullToBack(enableSwipe);
+    }
+
+//    public void setDragEdge(SwipeBackLayout.DragEdge dragEdge) {
+//        mSwipeBackLayout.setDragEdge(dragEdge);
+//    }
+
+    public SwipeBackLayout getSwipeBackLayout() {
+        return mSwipeBackLayout;
+    }
+
 
     public void setLayoutInflaterFactory() {
         LayoutInflater layoutInflater = getLayoutInflater();
@@ -118,6 +155,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         return initGridRecyclerView(0, adapter, decoration, spanCount);
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

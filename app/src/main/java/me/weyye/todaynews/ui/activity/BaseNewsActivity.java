@@ -1,5 +1,7 @@
 package me.weyye.todaynews.ui.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -14,8 +16,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,6 +28,7 @@ import me.weyye.todaynews.presenter.BaseDetailPresenter;
 import me.weyye.todaynews.ui.adapter.CommentAdapter;
 import me.weyye.todaynews.ui.view.ProgressWebView;
 import me.weyye.todaynews.utils.ConstanceValue;
+import me.weyye.todaynews.view.IBaseDetailView;
 
 import static me.weyye.todaynews.R.id.action_comment_count;
 
@@ -35,7 +36,7 @@ import static me.weyye.todaynews.R.id.action_comment_count;
  * Created by Administrator on 2016/11/24 0024.
  */
 
-public abstract class BaseNewsActivity<P extends BaseDetailPresenter> extends BaseMvpActivity<P> {
+public abstract class BaseNewsActivity extends BaseMvpActivity<BaseDetailPresenter> implements IBaseDetailView {
     @BindView(R.id.recyclerView)
     protected RecyclerView recyclerView;
     @BindView(R.id.write_comment_layout)
@@ -55,7 +56,7 @@ public abstract class BaseNewsActivity<P extends BaseDetailPresenter> extends Ba
     @BindView(R.id.action_repost)
     ImageView actionRepost;
     private ProgressWebView web;
-    private String url;
+    private String mUrl;
     private CommentAdapter mAdapter;
     private View headerView;
 
@@ -79,36 +80,59 @@ public abstract class BaseNewsActivity<P extends BaseDetailPresenter> extends Ba
         initCommonRecyclerView(mAdapter = new CommentAdapter(mDatas), null);
         headerView = View.inflate(this, R.layout.layout_webview, null);
         headerView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        web = (ProgressWebView) headerView.findViewById(R.id.web);
-        mAdapter.addHeaderView(headerView);
-        web.setOnHtmlEventListener(new ProgressWebView.OnHtmlEventListener() {
-            @Override
-            public void onFinished(String html) {
-                Pattern pattern = Pattern.compile("var.+group_id.+=.+\"([0-9]+)\";\\n.+var.+item_id.+=.+\"([0-9]+)\"");
-                Matcher matcher = pattern.matcher(html);
-                if (matcher.find()) {
-                    groupId = matcher.group(1);
-                    itemId = matcher.group(2);
-                    mvpPresenter.getComment(groupId, itemId, mPageNow);
-                }
 
 
-            }
-
-            @Override
-            public void onUriLoading(Uri uri) {
-                onUriLoad(uri);
-            }
-        });
         mAdapter.openLoadMore(10, true);
         View emptyView = View.inflate(this, R.layout.subscribe_list_empty_view, null);
         emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         mAdapter.setEmptyView(true, emptyView);
-        url = getIntent().getStringExtra(ConstanceValue.URL);
-        web.loadUrl(url);
+        Intent intent = getIntent();
+        mUrl = intent.getStringExtra(ConstanceValue.URL);
+        groupId = intent.getStringExtra(ConstanceValue.GROUP_ID);
+        itemId = intent.getStringExtra(ConstanceValue.ITEM_ID);
+        getData();
+        mAdapter.addHeaderView(createHeader());
+
+    }
+
+    public abstract View createHeader();
+
+    @Override
+    protected BaseDetailPresenter createPresenter() {
+        return new BaseDetailPresenter(this);
     }
 
     protected void onUriLoad(Uri uri) {
+    }
+
+    public static void startNews(Context context, String url, String groupId, String itemId) {
+        start(context, NewsDetailActivity.class, url, groupId, itemId);
+    }
+
+    public static void startVideo(Context context, String url, String groupId, String itemId) {
+        start(context, VideoDetailActivity.class, url, groupId, itemId);
+    }
+
+    private static void start(Context context, Class activityClass, String url, String groupId, String itemId) {
+        Intent intent = new Intent(context, activityClass);
+        intent.putExtra(ConstanceValue.URL, url);
+        intent.putExtra(ConstanceValue.GROUP_ID, groupId);
+        intent.putExtra(ConstanceValue.ITEM_ID, itemId);
+        context.startActivity(intent);
+    }
+
+    protected void getData() {
+        getNewsDetail();
+        getComment();
+    }
+
+    private void getComment() {
+        mvpPresenter.getComment(groupId, itemId, mPageNow);
+    }
+
+    private void getNewsDetail() {
+        mvpPresenter.getNewsDetail(mUrl);
+//        mvpPresenter.getNewsDetail("http://m.toutiao.com/i6417407501330809346/info/");
     }
 
     @Override
@@ -116,13 +140,16 @@ public abstract class BaseNewsActivity<P extends BaseDetailPresenter> extends Ba
         mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                if (!TextUtils.isEmpty(groupId) && !TextUtils.isEmpty(itemId))
-                    mvpPresenter.getComment(groupId, itemId, ++mPageNow);
+                if (!TextUtils.isEmpty(groupId) && !TextUtils.isEmpty(itemId)) {
+                    mPageNow++;
+                    getComment();
+                }
             }
         });
     }
 
-    protected void getCommentSuccess(CommentList response) {
+    @Override
+    public void onGetCommentSuccess(CommentList response) {
         if (response.total > 0) {
             actionCommentCount.setVisibility(View.VISIBLE);
             actionCommentCount.setText(response.total + "");
@@ -134,13 +161,12 @@ public abstract class BaseNewsActivity<P extends BaseDetailPresenter> extends Ba
         }
     }
 
+
     @OnClick({R.id.action_commont_layout, R.id.action_favor, R.id.action_repost})
     public void onClick(View view) {
         switch (view.getId()) {
 
             case R.id.action_commont_layout:
-//                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-//                linearLayoutManager.scrollToPositionWithOffset(1, 0);
                 recyclerView.smoothScrollToPosition(1);
                 break;
             case R.id.action_favor:

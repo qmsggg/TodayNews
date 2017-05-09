@@ -1,6 +1,5 @@
 package me.weyye.todaynews.ui.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
@@ -20,8 +19,7 @@ import me.weyye.todaynews.R;
 import me.weyye.todaynews.base.BaseMvpFragment;
 import me.weyye.todaynews.model.News;
 import me.weyye.todaynews.presenter.NewsListPresenter;
-import me.weyye.todaynews.ui.activity.NewsDetailActivity;
-import me.weyye.todaynews.ui.activity.VideoDetailActivity;
+import me.weyye.todaynews.ui.activity.BaseNewsActivity;
 import me.weyye.todaynews.ui.adapter.NewsAdapter;
 import me.weyye.todaynews.ui.view.LoadingFlashView;
 import me.weyye.todaynews.utils.ConstanceValue;
@@ -112,15 +110,18 @@ public class NewsListFragment extends BaseMvpFragment<NewsListPresenter> impleme
             @Override
             public void onItemClick(View view, int i) {
                 News news = mDatas.get(i);
+                ///item_seo_url的值是item/6412427713050575361/  ,取出6412427713050575361
+                String itemId = news.item_seo_url.replace("item/", "").replace("/", "");
+                StringBuffer urlSb = new StringBuffer("http://m.toutiao.com/");
+                if (!itemId.startsWith("i"))
+                    urlSb.append("i");
+                urlSb.append(itemId).append("/info/");
+                String url = urlSb.toString();
                 if (news.article_genre.equals(ConstanceValue.ARTICLE_GENRE_VIDEO)) {
                     //视频
-                    Intent intent = new Intent(mContext, VideoDetailActivity.class);
-                    intent.putExtra(ConstanceValue.URL, "http://m.toutiao.com".concat(news.source_url));
-                    startActivity(intent);
+                    BaseNewsActivity.startVideo(mContext, url, news.group_id, itemId);
                 } else {
-                    Intent intent = new Intent(mContext, NewsDetailActivity.class);
-                    intent.putExtra(ConstanceValue.URL, "http://m.toutiao.com".concat(news.source_url));
-                    startActivity(intent);
+                    BaseNewsActivity.startNews(mContext, url, news.group_id, itemId);
                 }
             }
         });

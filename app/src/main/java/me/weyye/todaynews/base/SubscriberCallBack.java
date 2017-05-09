@@ -1,5 +1,7 @@
 package me.weyye.todaynews.base;
 
+import android.text.TextUtils;
+
 import me.weyye.todaynews.utils.ToastUtils;
 
 /**
@@ -11,8 +13,9 @@ public abstract class SubscriberCallBack<T> extends BaseCallBack<ResultResponse<
 
     @Override
     public void onNext(ResultResponse response) {
-
-        if (response.message.equals("success")) {
+        boolean isSuccess = (!TextUtils.isEmpty(response.message) && response.message.equals("success"))
+                || !TextUtils.isEmpty(response.success) && response.success.equals("true");
+        if (isSuccess) {
             onSuccess((T) response.data);
         } else {
             ToastUtils.showToast(response.message);

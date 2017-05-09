@@ -95,6 +95,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements IHom
         tab.setSelectedTabIndicatorHeight(0);
 
 
+
     }
 
     /**
@@ -131,7 +132,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements IHom
 
     @Override
     protected void setListener() {
-
     }
 
 
@@ -145,8 +145,8 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements IHom
                 dialogFragment.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
-                        mVp.setOffscreenPageLimit(mSelectedDatas.size());
                         mTitlePagerAdapter.notifyDataSetChanged();
+                        mVp.setOffscreenPageLimit(mSelectedDatas.size());
                         tab.setCurrentItem(tab.getSelectedTabPosition());
                         ViewGroup slidingTabStrip = (ViewGroup) tab.getChildAt(0);
                         //注意：因为最开始设置了最小宽度，所以重新测量宽度的时候一定要先将最小宽度设置为0

@@ -2,9 +2,9 @@ package me.weyye.todaynews.ui.view;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.util.AttributeSet;
-import android.webkit.JavascriptInterface;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -36,49 +36,40 @@ public class ProgressWebView extends WebView {
                     view.loadUrl(url);
                     isShould = true;
                 } else {
-                    if (onHtmlEventListener != null)
-                        onHtmlEventListener.onUriLoading(Uri.parse(url));
                     isShould = false;
                 }
                 return isShould;
             }
 
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                view.loadUrl("javascript:window.local_obj.showSource('<head>'+" +
-                        "document.getElementsByTagName('html')[0].innerHTML+'</head>');");
-                super.onPageFinished(view, url);
-            }
         });
         setWebChromeClient(new WebChromeClient());
         WebSettings settings = getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setUseWideViewPort(true);
         settings.setLoadWithOverviewMode(true);
+        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         settings.setDomStorageEnabled(true);
-        addJavascriptInterface(new InJavaScriptLocalObj(), "local_obj");
-    }
 
-    private OnHtmlEventListener onHtmlEventListener;
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
 
-    public void setOnHtmlEventListener(OnHtmlEventListener onHtmlEventListener) {
-        this.onHtmlEventListener = onHtmlEventListener;
-    }
-
-    public interface OnHtmlEventListener {
-        void onFinished(String html);
-
-        void onUriLoading(Uri uri);
-    }
-
-    class InJavaScriptLocalObj {
-        @JavascriptInterface
-        public void showSource(String html) {
-//            Logger.i(html);
-            if (onHtmlEventListener != null) onHtmlEventListener.onFinished(html);
+        int mDensity = metrics.densityDpi;
+        Log.d("maomao", "densityDpi = " + mDensity);
+        if (mDensity == 240) {
+            settings.setDefaultZoom(WebSettings.ZoomDensity.FAR);
+        } else if (mDensity == 160) {
+            settings.setDefaultZoom(WebSettings.ZoomDensity.MEDIUM);
+        } else if(mDensity == 120) {
+            settings.setDefaultZoom(WebSettings.ZoomDensity.CLOSE);
+        }else if(mDensity == DisplayMetrics.DENSITY_XHIGH){
+            settings.setDefaultZoom(WebSettings.ZoomDensity.FAR);
+        }else if (mDensity == DisplayMetrics.DENSITY_TV){
+            settings.setDefaultZoom(WebSettings.ZoomDensity.FAR);
+        }else{
+            settings.setDefaultZoom(WebSettings.ZoomDensity.MEDIUM);
         }
     }
+
 
     public class WebChromeClient extends android.webkit.WebChromeClient {
         @Override
@@ -95,6 +86,11 @@ public class ProgressWebView extends WebView {
 
 
     }
+
+    public void setTextSize(int size) {
+
+    }
+
 
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {

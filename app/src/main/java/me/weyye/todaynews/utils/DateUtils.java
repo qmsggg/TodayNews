@@ -27,24 +27,8 @@ public class DateUtils {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         try {
             Date date = sdf.parse(dateStr);
-            Date curDate = new Date();
+            str=getShortTime(date.getTime());
 
-            long durTime = curDate.getTime() - date.getTime();
-            int dayStatus = calculateDayStatus(date, curDate);
-
-            if (durTime <= 10 * ONE_MINUTE_MILLIONS) {
-                str = "刚刚";
-            } else if (durTime < ONE_HOUR_MILLIONS) {
-                str = durTime / ONE_MINUTE_MILLIONS + "分钟前";
-            } else if (dayStatus == 0) {
-                str = durTime / ONE_HOUR_MILLIONS + "小时前";
-            } else if (dayStatus == -1) {
-                str = "昨天" + DateFormat.format("HH:mm", date);
-            } else if (isSameYear(date, curDate) && dayStatus < -1) {
-                str = DateFormat.format("MM-dd", date).toString();
-            } else {
-                str = DateFormat.format("yyyy-MM", date).toString();
-            }
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -58,20 +42,44 @@ public class DateUtils {
      * @return
      */
     public static String getShortTime(long millis) {
+
+        Date date = new Date(millis);
+        Date curDate = new Date();
+
+
         String str = "";
 
-        long durTime = System.currentTimeMillis() - millis;
+        long durTime = curDate.getTime() - date.getTime();
+
+
+        int dayStatus = calculateDayStatus(date, new Date());
 
         if (durTime <= 10 * ONE_MINUTE_MILLIONS) {
             str = "刚刚";
         } else if (durTime < ONE_HOUR_MILLIONS) {
             str = durTime / ONE_MINUTE_MILLIONS + "分钟前";
-        } else if (durTime < ONE_HOUR_MILLIONS * 24) {
+        } else if (dayStatus == 0) {
             str = durTime / ONE_HOUR_MILLIONS + "小时前";
+        } else if (dayStatus == -1) {
+            str = "昨天" + DateFormat.format("HH:mm", date);
+        } else if (isSameYear(date, curDate) && dayStatus < -1) {
+            str = DateFormat.format("MM-dd", date).toString();
         } else {
-            Date date = new Date(millis);
-            str = DateFormat.format("MM-dd HH:mm", date) + "";
+            str = DateFormat.format("yyyy-MM", date).toString();
         }
+
+
+
+//        if (durTime <= 10 * ONE_MINUTE_MILLIONS) {
+//            str = "刚刚";
+//        } else if (durTime < ONE_HOUR_MILLIONS) {
+//            str = durTime / ONE_MINUTE_MILLIONS + "分钟前";
+//        } else if (durTime < ONE_HOUR_MILLIONS * 24) {
+//            str = durTime / ONE_HOUR_MILLIONS + "小时前";
+//        } else {
+//            Date date = new Date(millis);
+//            str = DateFormat.format("MM-dd HH:mm", date) + "";
+//        }
         return str;
     }
 

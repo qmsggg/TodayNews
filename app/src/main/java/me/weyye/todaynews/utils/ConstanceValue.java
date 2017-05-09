@@ -9,8 +9,10 @@ public interface ConstanceValue {
     String DATA_UNSELECTED = "dataUnselected";
     String ARTICLE_GENRE_GALLERY = "gallery";
     String ARTICLE_GENRE_VIDEO = "video";
-    String ARTICLE_GENRE_ARTICLE = "article";
+    String  ARTICLE_GENRE_ARTICLE = "article";
     String URL = "url";
+    String GROUP_ID = "groupId";
+    String ITEM_ID = "itemId";
     String SP_THEME = "theme";
     int THEME_LIGHT = 1;
     int THEME_NIGHT = 2;

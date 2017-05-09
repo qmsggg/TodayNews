@@ -30,6 +30,7 @@ public abstract class VideoPathDecoder {
     public void decodePath(final String srcUrl) {
 
         AppClient.getApiService().getVideoHtml(srcUrl)
+//        Observable.just(videoId)
                 .flatMap(new Func1<String, Observable<ResultResponse<VideoModel>>>() {
                     @Override
                     public Observable<ResultResponse<VideoModel>> call(String response) {

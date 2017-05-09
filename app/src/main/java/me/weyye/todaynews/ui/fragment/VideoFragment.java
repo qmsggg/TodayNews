@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 import me.weyye.todaynews.R;
 import me.weyye.todaynews.base.BaseFragment;
 import me.weyye.todaynews.utils.ConstanceValue;
@@ -55,5 +56,11 @@ public class VideoFragment extends BasePagerFragment {
     @Override
     protected void setListener() {
 
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        JCVideoPlayer.releaseAllVideos();
     }
 }

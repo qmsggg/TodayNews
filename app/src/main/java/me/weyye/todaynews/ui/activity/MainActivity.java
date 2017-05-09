@@ -39,8 +39,6 @@ public class MainActivity extends BaseActivity {
     ImageView ivIconMe;
     @BindView(R.id.tvTextMe)
     TextView tvTextMe;
-    //    @BindView(R.id.bottomNav)
-//    BottomNavigationLayout bottomNav;
     private FragmentController mController;
 
     @Override
@@ -58,20 +56,8 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void processLogic(Bundle savedInstanceState) {
         mController = FragmentController.getInstance(this, R.id.fl_content, true);
+        setEnableSwipe(false);
         mController.showFragment(0);
-    }
-    private void initBottomNav() {
-//        bottomNav.builder().setItems(
-//                new NavigationItem( this, new int[]{R.drawable.b_newhome_tabbar, R.drawable.b_newhome_tabbar_press}, "首页", new int[]{getColorRes(R.color.font_main), getColorRes(R.color.font_main_p)}),
-//                new NavigationItem( this, new int[]{R.drawable.b_newvideo_tabbar, R.drawable.b_newvideo_tabbar_press}, "视频", new int[]{getColorRes(R.color.font_main), getColorRes(R.color.font_main_p)}),
-//                new NavigationItem( this, new int[]{R.drawable.b_newcare_tabbar, R.drawable.b_newcare_tabbar_press}, "关注", new int[]{getColorRes(R.color.font_main), getColorRes(R.color.font_main_p)}),
-//                new NavigationItem( this, new int[]{R.drawable.b_newmine_tabbar, R.drawable.b_newmine_tabbar_press}, "我的", new int[]{getColorRes(R.color.font_main), getColorRes(R.color.font_main_p)})
-//        ).setOnItemSelectedListener(new OnItemSelectedListener() {
-//            @Override
-//            public void onSelected(int position, View itemView) {
-//                mController.showFragment(position);
-//            }
-//        }).build();
     }
 
     private View lastSelectedIcon;

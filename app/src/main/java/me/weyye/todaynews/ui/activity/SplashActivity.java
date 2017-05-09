@@ -32,8 +32,8 @@ public class SplashActivity extends BaseActivity {
     ImageView mBannerView;
     @BindView(R.id.splash_view)
     ImageView mSplashView;
-        @BindView(R.id.skip_real)
-        TextView mSkipReal;
+    @BindView(R.id.skip_real)
+    TextView mSkipReal;
     @BindView(R.id.guide_fragment)
     FrameLayout mGuideFragment;
     @BindView(R.id.ad_click_small)
@@ -58,7 +58,6 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     protected void bindViews() {
-
     }
 
     @Override
@@ -100,15 +99,14 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mSubscription != null&&!mSubscription.isUnsubscribed())
+        if (mSubscription != null && !mSubscription.isUnsubscribed())
             mSubscription.unsubscribe();
     }
 
 
     @OnClick(R.id.skip_real)
     public void onClick(View v) {
-        switch (v.getId())
-        {
+        switch (v.getId()) {
             case R.id.skip_real:
                 goMain();
                 break;
@@ -116,7 +114,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void goMain() {
-        if (mSubscription != null&&!mSubscription.isUnsubscribed())
+        if (mSubscription != null && !mSubscription.isUnsubscribed())
             mSubscription.unsubscribe();
         intent2Activity(MainActivity.class);
         finish();

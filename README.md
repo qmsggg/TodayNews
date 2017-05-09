@@ -80,6 +80,7 @@
 # 版本
 
 ## v1.0.1
+* 修复栏目删除崩溃
 * 修改首页多个频道颜色渐变为[ColorTrackTabLayout](https://github.com/yewei02538/ColorTrackTabLayout)
 * 加入频道存储至本地
 * 添加修改或移动频道首页联动更新

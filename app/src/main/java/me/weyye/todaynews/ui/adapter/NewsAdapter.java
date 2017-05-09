@@ -52,7 +52,7 @@ public class NewsAdapter extends BaseQuickAdapter<News> {
             }
         } else if (news.article_genre.equals(ConstanceValue.ARTICLE_GENRE_GALLERY)) {
             //画廊类型
-            if (news.image_list == null) {
+            if (news.image_list == null || news.image_list.size() == 0) {
                 ImageLoaderUtils.displayImage(news.image_url, (ImageView) baseViewHolder.getView(R.id.ivRightImg1));
                 baseViewHolder.setVisible(R.id.rlRightImg, true)
                         .setVisible(R.id.viewFill, true);

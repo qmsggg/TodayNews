@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/root_layout"
-                android:animateLayoutChanges="true"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
+                android:layout_height="fill_parent"
+                android:animateLayoutChanges="true"
+                android:background="?attr/main_bg">
 
 
     <ImageView
@@ -18,11 +19,11 @@
         android:visibility="visible"/>
 
     <ImageView
-        android:layout_marginBottom="10dp"
         android:id="@+id/splash_view"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_above="@+id/banner_view"
+        android:layout_marginBottom="10dp"
         android:scaleType="fitXY"
         android:visibility="invisible"/>
 
@@ -64,14 +65,14 @@
     </LinearLayout>
 
     <!--<ImageView-->
-        <!--android:id="@+id/ad_splash_has_wifi_loaded"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginRight="9.0dip"-->
-        <!--android:layout_marginTop="14.0dip"-->
-        <!--android:layout_toLeftOf="@+id/ad_ignore"-->
-        <!--android:src="@drawable/wifi_splash"-->
-        <!--android:visibility="gone"/>-->
+    <!--android:id="@+id/ad_splash_has_wifi_loaded"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginRight="9.0dip"-->
+    <!--android:layout_marginTop="14.0dip"-->
+    <!--android:layout_toLeftOf="@+id/ad_ignore"-->
+    <!--android:src="@drawable/wifi_splash"-->
+    <!--android:visibility="gone"/>-->
 
     <FrameLayout
         android:id="@+id/ad_ignore"

@@ -43,4 +43,13 @@ public class VideoListFragment extends NewsListFragment {
             }
         });
     }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (!isVisibleToUser) {
+            JCVideoPlayer.releaseAllVideos();
+        }
+    }
+
 }
